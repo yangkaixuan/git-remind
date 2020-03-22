@@ -1,0 +1,21 @@
+{
+  "name": "git-remind",
+  "version": "0.0.5",
+  "description": "检查git分支之间的关系是否正确",
+  "main": "index.js",
+  "scripts": {},
+  "bin": {
+    "git-remind": "./bin/git-verification.js"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "files":[
+	  "/bin/"	
+  ],
+  "author": "yangkaixuan",
+  "license": "ISC",
+  "dependencies": {
+    "simple-git": "1.132.0"
+  }
+}
