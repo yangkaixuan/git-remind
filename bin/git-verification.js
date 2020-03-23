@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 
-const git = require('simple-git');  
 const {exec} = require('child_process')
 const config = require('../package.json');
+const {gitFn,log} = require('../lib/utils');
+
 
 let mainBranch = 'master' //默认为 master 分支
 const maxBuffer = 100 * 1024 * 1024;
@@ -12,78 +13,14 @@ const scriptName = process.argv[2];
 if (config.mainBranch) mainBranch = config.mainBranch;
 
 
-const styles = {     
-    'green': ['\x1B[32m', '\x1B[39m'], 
-    'red': ['\x1B[31m', '\x1B[39m'],
-    'yellow': ['\x1B[33m', '\x1B[39m'], 
-    'redBG': ['\x1B[41m', '\x1B[49m'],  
-}
-
-function log (key, obj) {
-    if (typeof obj === 'string') {
-        console.log(styles[key][0] + '%s' + styles[key][1], obj)
-    } 
-     else {
-        console.log(styles[key][0] + '%s' + styles[key][1], ...obj)
+async  function main() {    
+    let isOk = true; 
+    const remotesList = await gitFn.getRemotes();
+    if(!remotesList.length){
+        log('red', '请先添加remotes');   
+        isOk = false;
+        return isOk;
     }
-}
-
-
-
-const gitFn = {
-    fetch() {
-        return new Promise((resolve, reject) => {
-            git().fetch((e, r) => {
-                if (e) {
-                    reject();
-                }
-                resolve(r)
-            });
-        }) 
-    },
-    getbranchmerged() {
-        return new Promise((resolve, reject) => {
-            git().branch(['--merged'], (err, res) => {
-                if (err) reject();
-                else resolve(res.all);
-            })
-        })
-    },
-    getCurrentBranch() {
-        return new Promise((resolve, reject) => {
-            git().status((err, res) => {
-                if (err) reject();
-                else resolve(res.current);
-            });
-        });
-    },
-    getCurrentBehind() {
-        return new Promise((resolve, reject) => {
-            git().status((err, res) => {
-                if (err) reject();
-                else resolve(res.behind);
-            });
-        })
-    },
-    getbranchInfo(branch) {
-        return new Promise((resolve, reject) => {
-            git().branch(['-vv'], (err, res) => {
-                if (err) reject();
-                else {
-                    if (res.branches[branch]) {
-                        resolve(res.branches[branch])
-                    } else {
-                        reject(res.branches[branch])
-                    }
-    
-                }
-            })
-        })
-    }    
-} 
- 
-let isOk = true;
-async function init() {
     const fetchContent = await gitFn.fetch(); 
     if (fetchContent.raw) {
         console.log(fetchContent.raw)
@@ -123,6 +60,11 @@ async function init() {
             log('red', [`×   4.当前分支${currentBranch}目前没有更新`])
         }
     }
+    return isOk;
+    
+}
+async function init() { 
+    let isOk = await main();
     if (isOk) log('green', ['√', '  验证通过 !!!']);
     if (isOk && scriptName) {  
         console.log('验证通过 开始编译');       
