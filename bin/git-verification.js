@@ -24,7 +24,7 @@ async  function main() {
     const fetchContent = await gitFn.fetch(); 
     if (fetchContent.raw) {
         console.log(fetchContent.raw)
-        log('green', ['√', `  ${num++}.fetch success!`])
+        log('green', ['√', `  ${num++}.fetch success!`])  
     } else { 
         log('green', ['√', `  ${num++}.nothing to fetch`])
     }    
