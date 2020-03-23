@@ -18,6 +18,7 @@
   "author": "yangkaixuan",
   "license": "ISC",
   "dependencies": {
-    "simple-git": "1.132.0"
+    "simple-git": "1.132.0",
+    "inquirer":"7.1.0"
   }
 }
