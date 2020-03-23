@@ -41,11 +41,12 @@ async  function main() {
         log('red', [`×   ${num++}.${mainBranch} 主干分支需要更新`]);
         inquirer.prompt([
             {
-                type: 'input',
+                type: 'rawlist',
                 name: 'name',
-                message: "是否更新主干分支？Y/N",
-                validate(value) {
-                     if(value === 'Y'){
+                message: "是否更新主干分支？",
+                choices: ['Y','N'],
+                validate(value) {                    
+                     if(value.toLowerCase() === 'y'){
                          console.log('拉去');
                      }else{
                          return true
@@ -54,7 +55,7 @@ async  function main() {
             }
         ])
         .then(answers => {
-            fileHandle(answers.name)
+             
         });
     } 
     if (isAhead !== -1) {
@@ -83,14 +84,14 @@ async  function main() {
 }
 async function init() { 
     let isOk = await main();
-    if (isOk) log('green', ['√', '  验证通过 !!!']);
-    if (isOk && scriptName) {  
-        console.log('验证通过 开始编译');       
-        const childProces = exec(`npm run ${scriptName}`, {maxBuffer});
-        childProces.stderr.pipe(process.stderr);
-        childProces.stdout.pipe(process.stdout);
-    } else if (!isOk) {
-        log('red', '进程中断 请先上面解决问题');   
-    }
+    // if (isOk) log('green', ['√', '  验证通过 !!!']);
+    // if (isOk && scriptName) {  
+    //     console.log('验证通过 开始编译');       
+    //     const childProces = exec(`npm run ${scriptName}`, {maxBuffer});
+    //     childProces.stderr.pipe(process.stderr);
+    //     childProces.stdout.pipe(process.stdout);
+    // } else if (!isOk) {
+    //     log('red', '进程中断 请先上面解决问题');   
+    // }
 }
 init() 
