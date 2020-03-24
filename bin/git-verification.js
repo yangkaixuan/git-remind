@@ -39,8 +39,14 @@ async function main() {
         log('red', [`×   ${num++}.${mainBranch} 主干分支需要更新`]);
         let res = await inquirer.mergeMainBranch();
         if (res.main === 'Y') {
-            let res = await gitFn.mergeMainBranch(`remotes/origin/${mainBranch}`, mainBranch);
-            console.log(res);
+            let res = await gitFn
+                .mergeMainBranch(`remotes/origin/${mainBranch}`, mainBranch)
+                .catch((err) => {
+                    console.log('请先提交本地更改');
+                });
+            if (res && !res.conflicts.length) {
+                log('red', ['主干分支出现冲突，请先处理']);
+            }
         }
     }
 
