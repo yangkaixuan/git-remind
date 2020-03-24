@@ -1,28 +1,29 @@
 {
-  "name": "git-remind",
-  "version": "0.0.6",
-  "description": "检查git分支之间的关系是否正确",
-  "main": "index.js",
-  "scripts": {
-    "test": "node ./bin/git-verification.js",
-    "p": "prettier --write ."
-  },
-  "bin": {
-    "git-remind": "./bin/git-verification.js"
-  },
-  "engines": {
-    "node": ">=10.13.0"
-  },
-  "files": [
-    "/bin/"
-  ],
-  "author": "yangkaixuan",
-  "license": "ISC",
-  "dependencies": {
-    "simple-git": "1.132.0"
-  },
-  "devDependencies": {
-    "eslint": "6.8.0",
-    "prettier": "2.0.2"
-  }
+    "name": "git-remind",
+    "version": "0.0.6",
+    "description": "检查git分支之间的关系是否正确",
+    "main": "index.js",
+    "scripts": {
+        "test": "node ./bin/git-verification.js",
+        "p": "prettier --write ."
+    },
+    "bin": {
+        "git-remind": "./bin/git-verification.js"
+    },
+    "engines": {
+        "node": ">=10.13.0"
+    },
+    "files": [
+        "/bin/"
+    ],
+    "author": "yangkaixuan",
+    "license": "ISC",
+    "dependencies": {
+        "simple-git": "1.132.0",
+        "inquirer": "7.1.0"
+    },
+    "devDependencies": {
+        "eslint": "6.8.0",
+        "prettier": "2.0.2"
+    }
 }
