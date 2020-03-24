@@ -4,7 +4,8 @@
   "description": "检查git分支之间的关系是否正确",
   "main": "index.js",
   "scripts": {
-    "test": "node ./bin/git-verification.js"
+    "test": "node ./bin/git-verification.js",
+    "p": "prettier --write ."
   },
   "bin": {
     "git-remind": "./bin/git-verification.js"
@@ -19,5 +20,9 @@
   "license": "ISC",
   "dependencies": {
     "simple-git": "1.132.0"
+  },
+  "devDependencies": {
+    "eslint": "6.8.0",
+    "prettier": "2.0.2"
   }
 }
