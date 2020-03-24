@@ -2,8 +2,7 @@
 
 const { exec } = require('child_process');
 const config = require('../package.json');
-const { gitFn, log } = require('../lib/utils');
-const inquirer = require('inquirer');
+const { gitFn, log, inquirer } = require('../lib/utils');
 
 let mainBranch = 'master'; //默认为 master 分支
 const maxBuffer = 100 * 1024 * 1024;
@@ -38,24 +37,13 @@ async function main() {
     if (isBehind !== -1) {
         isOk = false;
         log('red', [`×   ${num++}.${mainBranch} 主干分支需要更新`]);
-        inquirer
-            .prompt([
-                {
-                    type: 'rawlist',
-                    name: 'name',
-                    message: '是否更新主干分支？',
-                    choices: ['Y', 'N'],
-                    validate(value) {
-                        if (value.toLowerCase() === 'y') {
-                            console.log('拉去');
-                        } else {
-                            return true;
-                        }
-                    },
-                },
-            ])
-            .then((answers) => {});
+        let res = await inquirer.mergeMainBranch();
+        if (res.main === 'Y') {
+            let res = await gitFn.mergeMainBranch(`remotes/origin/${mainBranch}`, mainBranch);
+            console.log(res);
+        }
     }
+
     if (isAhead !== -1) {
         log('red', [`×   ${num++}.注意本地 ${mainBranch} 主干分支没有提交`]);
     }
@@ -76,10 +64,7 @@ async function main() {
         }
         const Behind = await gitFn.getCurrentBehind();
         if (Behind === 0) {
-            log('green', [
-                '√',
-                `  ${num++}.当前分支${currentBranch}目前没有更新`,
-            ]);
+            log('green', ['√', `  ${num++}.当前分支${currentBranch}目前没有更新`]);
         } else {
             isOk = false;
             log('red', [`×   ${num++}.当前分支${currentBranch}目前没有更新`]);
@@ -98,5 +83,6 @@ async function init() {
     // } else if (!isOk) {
     //     log('red', '进程中断 请先上面解决问题');
     // }
+    console.log(12314123124);
 }
 init();
