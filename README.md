@@ -37,9 +37,9 @@ gr [-b <command>] [-m<mainbranch>] [-r {mainBranch | currentBranch}]
 
 |参数|说明|
 |:----:|:----|
-|--b |在检查脚本通过之后运行的命令，比如 --b build | 
-|--m|设置主干分支 例如 --m v2，默认为master，还可以在package.json中配置|
-|--r|只检查主干分支或者当前分支|
+|--bin |在检查脚本通过之后运行的命令，比如 --b build | 
+|--main-branch|设置主干分支 例如 --m v2，默认为master，还可以在package.json中配置|
+|--branch-only|只检查主干分支或者当前分支|
 
 例如
 
