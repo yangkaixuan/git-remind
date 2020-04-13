@@ -46,6 +46,7 @@ async function main() {
                 });
             if (res && !res.conflicts.length) {
                 log('red', ['主干分支出现冲突，请先处理']);
+                return;
             }
         }
     }
@@ -73,7 +74,20 @@ async function main() {
             log('green', ['√', `  ${num++}.当前分支${currentBranch}目前没有更新`]);
         } else {
             isOk = false;
-            log('red', [`×   ${num++}.当前分支${currentBranch}目前没有更新`]);
+            log('red', [`×   ${num++}.当前分支${currentBranch}需要更新`]);
+            let res = await inquirer.currentMerge(currentBranch);
+            if(res){
+                let res = await gitFn
+                .mergeMainBranch(`remotes/origin/${currentBranch}`, currentBranch)
+                .catch((err) => {
+                    console.log('请先提交本地更改');
+                });
+                if (res && !res.conflicts.length) {
+                    log('red', ['主干分支出现冲突，请先处理']);
+                    return;
+                }
+            }
+                
         }
     }
     return isOk;
