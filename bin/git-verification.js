@@ -44,7 +44,7 @@ async function main() {
                 .catch((err) => {
                     console.log('请先提交本地更改');
                 });
-            if (res && !res.conflicts.length) {
+            if (res && res.conflicts.length) {
                 log('red', ['主干分支出现冲突，请先处理']);
                 return;
             }
@@ -70,7 +70,6 @@ async function main() {
             ]);
         }
         const Behind = await gitFn.getCurrentBehind();
-        console.log(Behind);
         if (Behind === 0) {
             log('green', ['√', `  ${num++}.当前分支${currentBranch}目前没有更新`]);
         } else {
@@ -84,9 +83,8 @@ async function main() {
                 .catch((err) => {
                     console.log('请先提交本地更改');
                 });
-                console.log(res)
-                if (res && !res.conflicts.length) {
-                    log('red', ['主干分支出现冲突，请先处理']);
+                if (res && res.conflicts.length) {
+                    log('red', [`${currentBranch}分支出现冲突，请先处理`]);
                     return;
                 }
             }
