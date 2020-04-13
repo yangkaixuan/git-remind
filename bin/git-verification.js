@@ -77,6 +77,7 @@ async function main() {
             isOk = false;
             log('red', [`×   ${num++}.当前分支${currentBranch}需要更新`]);
             let res = await inquirer.currentMerge(currentBranch);
+            console.log(res)
             if(res){
                 let res = await gitFn
                 .mergeMainBranch(`remotes/origin/${currentBranch}`, currentBranch)
