@@ -37,10 +37,10 @@ async function main() {
     if (isBehind !== -1) {
         isOk = false;
         log('red', [`×   ${num++}.${mainBranch} 主干分支需要更新`]);
-        let res = await inquirer.mergeMainBranch();
+        let res = await inquirer.mainBranch();
         if (res.main === 'Y') {
             let res = await gitFn
-                .mergeMainBranch(`remotes/origin/${mainBranch}`, mainBranch)
+                .mergeBranch(`remotes/origin/${mainBranch}`, mainBranch)
                 .catch((err) => {
                     console.log('请先提交本地更改');
                 });
@@ -52,7 +52,7 @@ async function main() {
     }
 
     if (isAhead !== -1) {
-        log('red', [`×   ${num++}.注意本地 ${mainBranch} 主干分支没有提交`]);
+        log('yellow', [`×   ${num++}.注意本地 ${mainBranch} 主干分支没有提交`]);
     }
 
     if (currentBranch !== mainBranch) {
@@ -65,13 +65,23 @@ async function main() {
             ]);
         } else {
             isOk = false;
-            log('red', [
-                `×   ${num++}.发现当前分支${currentBranch}没有合并主干${mainBranch}分支，是否合并？`,
-            ]);
+            log('red', [`×   ${num++}.发现当前分支${currentBranch}没有合并主干${mainBranch}分支`]);
+            const res = await inquirer.mergeMainBranch();
+            if(res){
+                let res = await gitFn
+                .mergeBranch(mainBranch, currentBranch)
+                .catch((err) => {
+                    console.log('请先提交本地更改');
+                });
+                if (res && res.conflicts.length) {
+                    log('red', [`${currentBranch}分支出现冲突，请先处理`]);
+                    return;
+                }
+            }
         }
         const Behind = await gitFn.getCurrentBehind();
         if (Behind === 0) {
-            log('green', ['√', `  ${num++}.当前分支${currentBranch}目前没有更新`]);
+            log('green', ['√', `  ${num++}.当前分支${currentBranch}目前不需要更新`]);
         } else {
             isOk = false;
             log('red', [`×   ${num++}.当前分支${currentBranch}需要更新`]);
@@ -79,7 +89,7 @@ async function main() {
             console.log(res)
             if(res){
                 let res = await gitFn
-                .mergeMainBranch(`remotes/origin/${currentBranch}`, currentBranch)
+                .mergeBranch(`remotes/origin/${currentBranch}`, currentBranch)
                 .catch((err) => {
                     console.log('请先提交本地更改');
                 });
