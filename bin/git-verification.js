@@ -5,8 +5,8 @@ const config = require('../package.json');
 const { gitFn, log, inquirer } = require('../lib/utils');
 
 let mainBranch = 'master'; //默认为 master 分支
-const maxBuffer = 100 * 1024 * 1024;
-const scriptName = process.argv[2];
+const maxBuffer = 100 * 1024 * 1024; //最大缓存
+const scriptName = process.argv[2]; //获取参数
 
 if (config.mainBranch) mainBranch = config.mainBranch;
 
@@ -111,6 +111,7 @@ async function main() {
     }
     return isOk;
 }
+
 async function init() {
     let isOk = await main();
     if (isOk) log('green', ['√', '  验证通过 !!!']);
