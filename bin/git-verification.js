@@ -40,7 +40,10 @@ async function main() {
         let res = await inquirer.mainBranch();
         if (res.main === 'Y') {
             let res = await gitFn
-                .mergeBranch(`remotes/origin/${mainBranch}`, mainBranch)
+                .mergeBranch(`remotes/origin/${mainBranch}`, mainBranch).then(res => {
+                    isOk = true;
+                    log('green', ['√', `  ${num++}.主干分支:${mainBranch}分支 为最新提交`]);
+                })
                 .catch((err) => {
                     console.log('请先提交本地更改');
                 });
@@ -69,7 +72,10 @@ async function main() {
             const res = await inquirer.mergeMainBranch();
             if(res){
                 let res = await gitFn
-                .mergeBranch(mainBranch, currentBranch)
+                .mergeBranch(mainBranch, currentBranch).then(res => {
+                    log('green', ['√',`  ${num++}.当前分支${currentBranch}已经合并了主干分支${mainBranch}`]);
+                    isOk = true;
+                })
                 .catch((err) => {
                     console.log('请先提交本地更改');
                 });
@@ -86,10 +92,12 @@ async function main() {
             isOk = false;
             log('red', [`×   ${num++}.当前分支${currentBranch}需要更新`]);
             let res = await inquirer.currentMerge(currentBranch);
-            console.log(res)
             if(res){
                 let res = await gitFn
-                .mergeBranch(`remotes/origin/${currentBranch}`, currentBranch)
+                .mergeBranch(`remotes/origin/${currentBranch}`, currentBranch).then(res => {
+                    log('green', ['√', `  ${num++}.当前分支${currentBranch}目前不需要更新`]);
+                    isOk = true;
+                })
                 .catch((err) => {
                     console.log('请先提交本地更改');
                 });
