@@ -25,12 +25,16 @@ npm i -D git-remind
 ```
 ### 使用
 ```
-git-remind [--b <command>] [--m <mainbranch>] [--r {mainBranch | currentBranch}]
+git-remind [--bin <command>] [--main-branch <mainbranch>] [--branch-only {mainBranch | currentBranch}]
 ```
-git-remind 也可以简写成gr例如
+git-remind 也可以简写成gr 还有其他参数简写例如
 ```
-gr [--b <command>] [--r {mainBranch | currentBranch}]
+gr [-b <command>] [-m<mainbranch>] [-r {mainBranch | currentBranch}]
+
 ```
+
+
+
 |参数|说明|
 |:----:|:----|
 |--b |在检查脚本通过之后运行的命令，比如 --b build | 
