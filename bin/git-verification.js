@@ -82,6 +82,7 @@ async function main() {
                 .catch((err) => {
                     console.log('请先提交本地更改');
                 });
+                console.log(res)
                 if (res && !res.conflicts.length) {
                     log('red', ['主干分支出现冲突，请先处理']);
                     return;
