@@ -70,6 +70,7 @@ async function main() {
             ]);
         }
         const Behind = await gitFn.getCurrentBehind();
+        console.log(Behind);
         if (Behind === 0) {
             log('green', ['√', `  ${num++}.当前分支${currentBranch}目前没有更新`]);
         } else {
