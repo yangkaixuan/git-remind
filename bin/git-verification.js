@@ -2,7 +2,7 @@
 
 const { exec } = require('child_process');
 const config = require('../package.json');
-const { gitFn, log, inquirer } = require('../lib/utils');
+const { gitFn, log, inquirer } = require('./utils');
 const { program } = require('commander');
 program.version(config.version);
 
@@ -98,9 +98,9 @@ async function main() {
 async function init() {
     let isOk = await main();
     if (isOk) log('green', ['√', '  验证通过 !!!']);
-    if (isOk && program.bin) {
+    if (isOk && program.bin) { 
         console.log('验证通过 开始编译');
-        const childProces = exec(`npm run ${scriptName}`, {maxBuffer});
+        const childProces = exec(`${program.bin}`, {maxBuffer});
         childProces.stderr.pipe(process.stderr);
         childProces.stdout.pipe(process.stdout);
     } else if (!isOk) {
